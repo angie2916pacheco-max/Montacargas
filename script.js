@@ -11,28 +11,19 @@
 const menuButton = document.getElementById("menuButton");
 const navigation = document.getElementById("navigation");
 
-
 if (menuButton && navigation) {
 
     menuButton.addEventListener("click", () => {
-
         navigation.classList.toggle("open");
-
     });
 
-
     // Cerrar el menú al seleccionar una sección
-
-    const navigationLinks =
-        navigation.querySelectorAll("a");
-
+    const navigationLinks = navigation.querySelectorAll("a");
 
     navigationLinks.forEach(link => {
 
         link.addEventListener("click", () => {
-
             navigation.classList.remove("open");
-
         });
 
     });
@@ -44,35 +35,31 @@ if (menuButton && navigation) {
    ANIMACIONES AL HACER SCROLL
 ========================================================= */
 
-const revealElements =
-    document.querySelectorAll(".reveal");
+const revealElements = document.querySelectorAll(".reveal");
 
+const revealObserver = new IntersectionObserver(
 
-const revealObserver =
-    new IntersectionObserver(
+    (entries, observer) => {
 
-        (entries, observer) => {
+        entries.forEach(entry => {
 
-            entries.forEach(entry => {
+            if (entry.isIntersecting) {
 
-                if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
 
-                    entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
 
-                    observer.unobserve(entry.target);
+            }
 
-                }
+        });
 
-            });
+    },
 
-        },
+    {
+        threshold: 0.12
+    }
 
-        {
-            threshold: 0.12
-        }
-
-    );
-
+);
 
 revealElements.forEach(element => {
 
@@ -85,9 +72,7 @@ revealElements.forEach(element => {
    BOTÓN VOLVER ARRIBA
 ========================================================= */
 
-const backTop =
-    document.getElementById("backTop");
-
+const backTop = document.getElementById("backTop");
 
 if (backTop) {
 
@@ -104,7 +89,6 @@ if (backTop) {
         }
 
     });
-
 
     backTop.addEventListener("click", () => {
 
@@ -125,9 +109,7 @@ if (backTop) {
    AÑO AUTOMÁTICO DEL FOOTER
 ========================================================= */
 
-const yearElement =
-    document.getElementById("year");
-
+const yearElement = document.getElementById("year");
 
 if (yearElement) {
 
@@ -144,7 +126,6 @@ if (yearElement) {
 const serviceForm =
     document.getElementById("serviceForm");
 
-
 if (serviceForm) {
 
     serviceForm.addEventListener(
@@ -153,13 +134,11 @@ if (serviceForm) {
 
             event.preventDefault();
 
-
             const nombre =
                 document
                     .getElementById("nombre")
                     .value
                     .trim();
-
 
             const telefono =
                 document
@@ -167,14 +146,64 @@ if (serviceForm) {
                     .value
                     .trim();
 
-
             const servicio =
                 document
                     .getElementById("servicio")
                     .value
                     .trim();
 
-
             const mensaje =
                 document
                     .getElementById("mensaje")
+                    .value
+                    .trim();
+
+            const texto =
+                `Hola, quiero solicitar un servicio de Montacargas y Servicios MR S.A.S.\n\n` +
+                `Nombre: ${nombre}\n` +
+                `Teléfono: ${telefono}\n` +
+                `Servicio: ${servicio}\n` +
+                `Mensaje: ${mensaje || "No especificado"}`;
+
+            const whatsappUrl =
+                "https://wa.me/573202720479?text=" +
+                encodeURIComponent(texto);
+
+            window.open(
+                whatsappUrl,
+                "_blank",
+                "noopener,noreferrer"
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ENLACES DE SOLICITUD DESDE LA TABLA DE PRECIOS
+========================================================= */
+
+const serviceLinks =
+    document.querySelectorAll("[data-service]");
+
+serviceLinks.forEach(link => {
+
+    link.addEventListener("click", () => {
+
+        const service =
+            link.getAttribute("data-service");
+
+        const serviceSelect =
+            document.getElementById("servicio");
+
+        if (serviceSelect && service) {
+
+            serviceSelect.value = service;
+
+        }
+
+    });
+
+});
